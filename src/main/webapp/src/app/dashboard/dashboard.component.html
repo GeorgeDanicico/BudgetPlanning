@@ -1,0 +1,36 @@
+<div class="dashboard-container">
+    <mat-toolbar color="primary">
+      <button mat-icon-button (click)="toggleSidenav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="toolbar-title">Dashboard</span>
+      <span class="spacer"></span> <!-- Add a spacer to push the logout button to the right -->
+      <button mat-icon-button (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+      </button>
+    </mat-toolbar>
+  
+    <mat-sidenav-container class="sidenav-container">
+      <mat-sidenav #sidenav mode="side" [opened]="isSidenavOpen">
+        <mat-nav-list>
+          <a mat-list-item routerLink="/dashboard" routerLinkActive="active-link">
+            <mat-icon>dashboard</mat-icon>
+            <span class="nav-label">Dashboard</span>
+          </a>
+          <a mat-list-item routerLink="/profile" routerLinkActive="active-link">
+            <mat-icon>person</mat-icon>
+            <span class="nav-label">Profile</span>
+          </a>
+          <a mat-list-item routerLink="/settings" routerLinkActive="active-link">
+            <mat-icon>settings</mat-icon>
+            <span class="nav-label">Settings</span>
+          </a>
+          <!-- Add more navigation items as needed -->
+        </mat-nav-list>
+      </mat-sidenav>
+  
+      <mat-sidenav-content>
+        <!-- Your dashboard content goes here -->
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  </div>

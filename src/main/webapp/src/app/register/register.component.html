@@ -1,0 +1,35 @@
+<mat-toolbar color="primary" class="mat-elevation-z6">
+    <span>Budget Management App</span>
+</mat-toolbar>
+<div>
+    <mat-card>
+        <mat-card-content>
+            <mat-card-title align="center" data-qa="register-title">Please register</mat-card-title>
+            <form class="register-form" [formGroup]="this.form">
+                <mat-form-field>
+                    <input matInput type="text" placeholder="Username" required class="form-control" formControlName="username" data-qa="username" [readonly]="this.isLoading">
+                    <mat-error>Username is required</mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput type="text" placeholder="Email" required class="form-control" formControlName="email" data-qa="password" [readonly]="this.isLoading">
+                    <mat-error>Email is required</mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput [type]="this.hidePassword ? 'password' : 'text'" placeholder="Password" required class="form-control" formControlName="password" data-qa="password" [readonly]="this.isLoading">
+                    <mat-icon matSuffix (click)="togglePasswordVisibility()">{{ this.hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    <mat-error>Password is required</mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput [type]="this.hideConfirmPassword ? 'password' : 'text'" placeholder="Confirm password" required class="form-control" formControlName="confirmPassword" data-qa="confirmPassword" [readonly]="this.isLoading">
+                    <mat-icon matSuffix (click)="toggleConfirmPasswordVisibility()">{{ this.hideConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    <mat-error>Confirm Password is required</mat-error>
+                </mat-form-field>
+                <mat-card-actions>
+                    <button mat-raised-button color="primary" (click)="register()" type="submit" data-qa="register-button">Register</button>
+                    <a routerLink="/login">Already have an account? Login now!</a>
+                </mat-card-actions>
+            </form>
+        </mat-card-content>
+    </mat-card>
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+</div>

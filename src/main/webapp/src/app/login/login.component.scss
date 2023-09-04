@@ -1,0 +1,67 @@
+mat-toolbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    background: #ffb80a !important;
+
+    span {
+        margin: 0 auto;
+    }
+}
+
+mat-card {
+    height: 350px;
+    width: 350px;
+    top: 175px;
+    left: 0;
+    margin: 0 auto;
+    right: 0;
+    background-color: #f9f9fb;
+
+    mat-card-content {
+        padding: 24px;
+        
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 40px 0;
+        }
+
+        .mat-card-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            button {
+                padding: 0 135px;
+                margin-top: 30px;
+                background: #ffb80a !important;
+            }
+
+            a {
+
+            }
+        }
+
+        .error-login {
+            text-align: center;
+            padding-bottom: 8px;
+        }
+
+        .access {
+            text-align: center;
+
+            a {
+                text-decoration: none;
+                color: inherit;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+
+    }
+}
