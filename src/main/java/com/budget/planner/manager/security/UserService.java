@@ -1,4 +1,4 @@
-package com.budget.planner.manager.security.services;
+package com.budget.planner.manager.security;
 
 import com.budget.planner.manager.model.Profile;
 import com.budget.planner.manager.repository.ProfileRepository;

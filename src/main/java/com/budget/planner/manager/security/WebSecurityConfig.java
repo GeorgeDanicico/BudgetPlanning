@@ -1,11 +1,8 @@
 package com.budget.planner.manager.security;
 
-import com.budget.planner.manager.security.jwt.JwtAuthEntryPoint;
-import com.budget.planner.manager.security.jwt.JwtAuthFilter;
-import com.budget.planner.manager.security.jwt.JwtService;
-import com.budget.planner.manager.security.services.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -17,6 +14,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 
 @Configuration
@@ -24,18 +24,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
     private final UserService userService;
     private final JwtAuthEntryPoint unauthorizedHandler;
-    private final JwtService jwtService;
+    private final SessionService sessionService;
 
-    public WebSecurityConfig(UserService userService, JwtAuthEntryPoint unauthorizedHandler, JwtService jwtService) {
+    public WebSecurityConfig(UserService userService, JwtAuthEntryPoint unauthorizedHandler, SessionService sessionService) {
         this.userService = userService;
         this.unauthorizedHandler = unauthorizedHandler;
-        this.jwtService = jwtService;
+        this.sessionService = sessionService;
     }
 
 
-    @Bean
-    public JwtAuthFilter authenticationJwtTokenFilter() {
-        return new JwtAuthFilter(jwtService, userService);
+    public SessionAuthorizationFilter sessionAuthorizationFilter() {
+        return new SessionAuthorizationFilter(sessionService);
     }
 
     @Bean
@@ -54,6 +53,11 @@ public class WebSecurityConfig {
     }
 
     @Bean
+    public HttpSessionEventPublisher httpSessionEventPublisher() {
+        return new HttpSessionEventPublisher();
+    }
+
+    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
@@ -61,14 +65,23 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                        .maximumSessions(1))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/register/**").permitAll()
-                        .requestMatchers("/api/login/**").permitAll()
+                        .requestMatchers("/api/register").permitAll()
+                        .requestMatchers("/api/login").permitAll()
                         .anyRequest().authenticated())
+                .securityContext(securityContext ->
+                        securityContext.securityContextRepository(new HttpSessionSecurityContextRepository()))
+                .logout((logout) -> logout.logoutUrl("/api/logout") // Customize your logout URL
+                        .clearAuthentication(true)
+                        .invalidateHttpSession(true)
+                        .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
+                )
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(sessionAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

@@ -16,5 +16,5 @@ public class UserResponse {
     private String email;
     @NotNull
     @NotEmpty
-    private String accessToken;
+    private String sessionId;
 }

@@ -9,57 +9,62 @@ import com.budget.planner.manager.model.Role;
 import com.budget.planner.manager.model.enums.ERole;
 import com.budget.planner.manager.repository.ProfileRepository;
 import com.budget.planner.manager.repository.RoleRepository;
-import com.budget.planner.manager.security.jwt.JwtService;
+import com.budget.planner.manager.security.SessionService;
+import com.budget.planner.manager.security.Token;
 import jakarta.validation.Valid;
+import org.hibernate.Session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/api")
 public class AuthController {
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
+
     private final ProfileRepository profileRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtService jwtService;
+    private final SessionService sessionService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthController(ProfileRepository profileRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
+    public AuthController(ProfileRepository profileRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, SessionService sessionService, AuthenticationManager authenticationManager) {
         this.profileRepository = profileRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
-        this.jwtService = jwtService;
+        this.sessionService = sessionService;
         this.authenticationManager = authenticationManager;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
+        logger.info("Entered login method from the AuthController.");
+
         Profile profile = profileRepository.findByUsername(loginRequest.getUsername()).orElse(null);
         if (profile == null) {
             throw new RuntimeException("Error...");
         }
-        var authToken  = new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
         );
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtService.generateToken((UserDetails) authentication.getPrincipal());
-
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-
+        final SecurityContext context = SecurityContextHolder.createEmptyContext();
+        context.setAuthentication(authentication);
+        SecurityContextHolder.setContext(context);
+        Token sessionToken = sessionService.createSession(authentication);
+        // SecurityContextHolder.getContext().getAuthentication();
         try {
             UserResponse userResponse = new UserResponse(profile.getUsername(),
-                    profile.getEmail(), jwt);
+                    profile.getEmail(), sessionToken.getId());
             return ResponseEntity.ok(userResponse);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
