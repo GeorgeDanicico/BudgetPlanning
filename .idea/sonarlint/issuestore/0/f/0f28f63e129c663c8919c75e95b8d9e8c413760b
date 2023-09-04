@@ -1,0 +1,28 @@
+
+E
+java:S5411G"(Use a primitive boolean expression here.(ğù«‚8ı³¿Ã£1
+E
+java:S5411K"(Use a primitive boolean expression here.(¸ÿø¹8ôà¬æ¢1
+C
+java:S1452-"&Remove usage of generic wildcard type.(—­è€8‚Ã¥1
+]	java:S1250"<This block of commented-out lines of code should be removed.(¼è÷ïøÿÿÿÿ8˜´”ö¢1
+C
+java:S1452F"&Remove usage of generic wildcard type.(Ñ°¶”8‡Ã¥1
+o
+java:S1128"RRemove this unused import 'com.budget.planner.manager.dto.responses.UserResponse'.(ışÎş8ÄÒ–ö¢1
+
+java:S1128"lRemove this unused import 'org.springframework.security.authentication.UsernamePasswordAuthenticationToken'.(ÖÆ„Ùüÿÿÿÿ8ÅÒ–ö¢1
+j
+java:S1128"MRemove this unused import 'org.springframework.security.core.Authentication'.(ñıÓ“8ÅÒ–ö¢1
+y
+java:S1128"\Remove this unused import 'org.springframework.security.core.context.SecurityContextHolder'.(ŒÄæë8ÅÒ–ö¢1
+s
+java:S1128"VRemove this unused import 'org.springframework.security.core.userdetails.UserDetails'.(ÊÁ¥8ÅÒ–ö¢1
+J
+java:S1128".Remove this unused import 'java.util.HashSet'.(Ê‚êX8ÅÒ–ö¢1
+L
+java:S1128"*Remove this unused import 'java.util.Set'.(ö²„¤şÿÿÿÿ8ÅÒ–ö¢1
+K
+java:S1068!".Remove this unused "jwtService" private field.(ïşº¯8´”ö¢1
+[
+java:S1068""9Remove this unused "authenticationManager" private field.(™º¶ùúÿÿÿÿ8´”ö¢1
