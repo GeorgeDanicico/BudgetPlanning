@@ -6,9 +6,10 @@ import lombok.Getter;
 @Getter
 public class MessageResponse {
     private final String message;
+    private final Integer status;
 
-    public MessageResponse(String msg) {
+    public MessageResponse(Integer status, String msg) {
+        this.status = status;
         this.message = msg;
     }
-
 }

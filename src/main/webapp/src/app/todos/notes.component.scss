@@ -1,0 +1,61 @@
+.notes-container {
+    // display: flex;
+    .header-container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    li {
+        list-style-type: none;
+    }
+
+    .notes-card-container {
+        width: 100vh;
+        height: 80vh;
+        display: inline-flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: flex-start;
+        align-content: flex-start;
+    
+        .notes-card {
+            position: relative;
+            border: 1px solid #ddd;
+            transition: background-color 0.5s; /* Add a smooth background color transition */          
+            width: 200px;
+            height: 80px;
+            margin: 20px;
+
+            &:hover {
+                background-color: #f0f0f0; /* Change background color on hover */
+            
+            }
+
+            .delete-button {
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                color: black;
+                background-color: transparent;
+                border: none;
+                padding: 4px 8px;
+                cursor: pointer;
+                display: none; /* Initially hide the delete button */
+            }
+
+            .notes-details {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .description-content {
+                color: #999999
+            }
+        }
+
+        .notes-card:hover .delete-button {
+            display: block; /* Show the delete button on hover */
+          }
+          
+    }
+}

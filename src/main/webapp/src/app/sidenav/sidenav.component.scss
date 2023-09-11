@@ -1,0 +1,45 @@
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  
+    .mat-toolbar {
+      background-color: #ffb80a;
+      position: relative;
+      z-index: 2;
+  
+      .spacer {
+        flex: 1; /* This pushes the logout button to the right */
+      }
+  
+      .mat-icon-button {
+        margin-left: 16px; /* Add some spacing between the logout button and other content */
+      }
+    }
+  
+    .sidenav-container {
+      flex: 1;
+      overflow: hidden;
+  
+      .mat-sidenav {
+        width: 250px;
+  
+        .mat-list-item {
+          padding-left: 24px;
+          cursor: pointer;
+  
+          .nav-label {
+            margin-left: 16px;
+          }
+        }
+      }
+  
+      .mat-sidenav-content {
+        padding: 16px;
+      }
+    }
+  }
+  
+  .active-link {
+    background-color: rgba(0, 0, 0, 0.04);
+  }

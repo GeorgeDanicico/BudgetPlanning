@@ -1,0 +1,30 @@
+<div class="notes-container">
+  <div class="header-container">
+    <mat-card-header>
+      <mat-card-title>My Notes</mat-card-title>
+    </mat-card-header>
+    <button mat-flat-button>
+      Add Note
+    </button>
+  </div>
+  <div class="notes-card-container">
+    <li *ngFor="let note of notes">
+    <mat-card class="notes-card">
+      <div class="notes-card-content">
+        <mat-card-header>
+          <mat-card-title>{{note.title}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p class="description-content">{{note.description}}</p>
+        </mat-card-content>
+      </div>
+
+      <button mat-flat-button class="delete-button">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-card>
+
+    </li>
+  </div>
+</div>
+  

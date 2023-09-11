@@ -18,9 +18,13 @@ import { MatFormFieldModule, MatError } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import {MatDatepicker, MatDatepickerModule} from '@angular/material/datepicker';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatNativeDateModule } from '@angular/material/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthorizationService } from './services/authorization-service.service';
+import { NotesComponent } from './todos/notes.component';
+import { SidenavComponent } from './sidenav/sidenav.component';
 
 
 @NgModule({
@@ -29,8 +33,11 @@ import { AuthorizationService } from './services/authorization-service.service';
     LoginComponent,
     RegisterComponent,
     DashboardComponent,
+    NotesComponent,
+    SidenavComponent,
   ],
   imports: [
+    MatNativeDateModule,
     MatCardModule,
     MatFormFieldModule,
     MatIconModule,
@@ -41,6 +48,7 @@ import { AuthorizationService } from './services/authorization-service.service';
     MatSidenavModule,
     MatSnackBarModule,
     MatListModule,
+    MatDatepickerModule,
     ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,

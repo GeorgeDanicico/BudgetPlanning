@@ -11,8 +11,9 @@ import com.budget.planner.manager.repository.ProfileRepository;
 import com.budget.planner.manager.repository.RoleRepository;
 import com.budget.planner.manager.security.SessionService;
 import com.budget.planner.manager.security.Token;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +22,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
@@ -36,17 +37,19 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final SessionService sessionService;
     private final AuthenticationManager authenticationManager;
+    private final SecurityContextRepository securityContextRepository;
 
-    public AuthController(ProfileRepository profileRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, SessionService sessionService, AuthenticationManager authenticationManager) {
+    public AuthController(ProfileRepository profileRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, SessionService sessionService, AuthenticationManager authenticationManager, SecurityContextRepository securityContextRepository) {
         this.profileRepository = profileRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.sessionService = sessionService;
         this.authenticationManager = authenticationManager;
+        this.securityContextRepository = securityContextRepository;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest, HttpServletRequest request, HttpServletResponse response) {
         logger.info("Entered login method from the AuthController.");
 
         Profile profile = profileRepository.findByUsername(loginRequest.getUsername()).orElse(null);
@@ -60,25 +63,25 @@ public class AuthController {
         final SecurityContext context = SecurityContextHolder.createEmptyContext();
         context.setAuthentication(authentication);
         SecurityContextHolder.setContext(context);
+        securityContextRepository.saveContext(context, request, response);
         Token sessionToken = sessionService.createSession(authentication);
-        // SecurityContextHolder.getContext().getAuthentication();
         try {
             UserResponse userResponse = new UserResponse(profile.getUsername(),
                     profile.getEmail(), sessionToken.getId());
             return ResponseEntity.ok(userResponse);
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+            return ResponseEntity.badRequest().body(new MessageResponse(400, e.getMessage()));
         }
     }
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
         if(profileRepository.existsByUsername(registerRequest.getUsername())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken."));
+            return ResponseEntity.badRequest().body(new MessageResponse(400, "Error: Username is already taken."));
         }
 
         if(profileRepository.existsByEmail(registerRequest.getEmail())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already taken."));
+            return ResponseEntity.badRequest().body(new MessageResponse(400, "Error: Email is already taken."));
         }
 
         Role userRole = roleRepository.findByName(ERole.USER).orElseThrow(() -> new RuntimeException("Error: Role is not found."));
@@ -89,7 +92,7 @@ public class AuthController {
                 userRole
         );
         profileRepository.save(profile);
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        return ResponseEntity.ok(new MessageResponse(201, "User registered successfully!"));
     }
 
 }

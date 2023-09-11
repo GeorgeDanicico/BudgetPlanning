@@ -16,6 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 
@@ -35,6 +36,11 @@ public class WebSecurityConfig {
 
     public SessionAuthorizationFilter sessionAuthorizationFilter() {
         return new SessionAuthorizationFilter(sessionService);
+    }
+
+    @Bean
+    public SecurityContextRepository securityContextRepository() {
+        return new HttpSessionSecurityContextRepository();
     }
 
     @Bean
@@ -73,7 +79,9 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/login").permitAll()
                         .anyRequest().authenticated())
                 .securityContext(securityContext ->
-                        securityContext.securityContextRepository(new HttpSessionSecurityContextRepository()))
+                        securityContext
+                                .securityContextRepository(new HttpSessionSecurityContextRepository())
+                                .requireExplicitSave(true))
                 .logout((logout) -> logout.logoutUrl("/api/logout") // Customize your logout URL
                         .clearAuthentication(true)
                         .invalidateHttpSession(true)

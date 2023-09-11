@@ -17,12 +17,28 @@
                 <mat-form-field>
                     <input matInput [type]="this.hidePassword ? 'password' : 'text'" placeholder="Password" required class="form-control" formControlName="password" data-qa="password" [readonly]="this.isLoading">
                     <mat-icon matSuffix (click)="togglePasswordVisibility()">{{ this.hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-                    <mat-error>Password is required</mat-error>
+                    <mat-error>
+                        <span *ngIf="this.form.get('password')?.hasError('required')">
+                            Password is required
+                        </span>
+
+                        <span *ngIf="this.form.get('password')?.hasError('passwordNotMatch')">
+                            Passwords do not match
+                        </span>
+                    </mat-error>
                 </mat-form-field>
                 <mat-form-field>
                     <input matInput [type]="this.hideConfirmPassword ? 'password' : 'text'" placeholder="Confirm password" required class="form-control" formControlName="confirmPassword" data-qa="confirmPassword" [readonly]="this.isLoading">
                     <mat-icon matSuffix (click)="toggleConfirmPasswordVisibility()">{{ this.hideConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-                    <mat-error>Confirm Password is required</mat-error>
+                    <mat-error>
+                        <span *ngIf="this.form.get('confirmPassword')?.hasError('required')">
+                            Confirm Password is required
+                        </span>
+
+                        <span *ngIf="this.form.get('confirmPassword')?.hasError('passwordNotMatch')">
+                            Passwords do not match
+                        </span>
+                    </mat-error>
                 </mat-form-field>
                 <mat-card-actions>
                     <button mat-raised-button color="primary" (click)="register()" type="submit" data-qa="register-button">Register</button>
