@@ -18,13 +18,15 @@ import { MatFormFieldModule, MatError } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import {MatDatepicker, MatDatepickerModule} from '@angular/material/datepicker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatNativeDateModule } from '@angular/material/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthorizationService } from './services/authorization-service.service';
-import { NotesComponent } from './todos/notes.component';
+import { NotesComponent } from './notes/notes.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
+import { NoteComponent } from './notes/note/note.component';
 
 
 @NgModule({
@@ -35,6 +37,7 @@ import { SidenavComponent } from './sidenav/sidenav.component';
     DashboardComponent,
     NotesComponent,
     SidenavComponent,
+    NoteComponent,
   ],
   imports: [
     MatNativeDateModule,
@@ -47,6 +50,7 @@ import { SidenavComponent } from './sidenav/sidenav.component';
     MatButtonModule,
     MatSidenavModule,
     MatSnackBarModule,
+    MatDialogModule,
     MatListModule,
     MatDatepickerModule,
     ReactiveFormsModule,
@@ -54,6 +58,7 @@ import { SidenavComponent } from './sidenav/sidenav.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    FormsModule,
   ],
   providers: [
     AuthorizationService

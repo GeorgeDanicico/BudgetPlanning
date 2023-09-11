@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NoteDialogService } from '../services/note-dialog.service';
 
 @Component({
   selector: 'app-notes',
@@ -9,7 +10,7 @@ export class NotesComponent implements OnInit {
 
   notes: any[] = [];
 
-  constructor() { }
+  constructor(private noteDialogService: NoteDialogService) { }
 
   ngOnInit(): void {
     this.notes = [{
@@ -37,6 +38,17 @@ export class NotesComponent implements OnInit {
         description: 'Note description',
       }
     ];
+  }
+
+  addNote() {
+    const dialogRef = this.noteDialogService.openNoteDialog();
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Handle the result (e.g., add the note)
+        console.log('Note added:', result);
+      }
+    });
   }
 
 }
