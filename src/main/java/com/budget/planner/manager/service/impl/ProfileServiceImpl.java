@@ -5,7 +5,9 @@ import com.budget.planner.manager.repository.ProfileRepository;
 import com.budget.planner.manager.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ProfileServiceImpl implements ProfileService {
     @Autowired
     private ProfileRepository profileRepository;

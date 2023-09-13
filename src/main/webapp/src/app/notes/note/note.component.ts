@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { INoteData } from 'src/app/utils/app.types';
 
 @Component({
   selector: 'app-note',
@@ -9,10 +10,19 @@ import { MatDialogRef } from '@angular/material/dialog';
 export class NoteComponent implements OnInit {
   title: string = '';
   description: string = '';
+  isEditMode: boolean = false;
 
-  constructor(private dialogRef: MatDialogRef<NoteComponent>) { }
+  constructor(
+    private dialogRef: MatDialogRef<NoteComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: INoteData
+  ) { }
 
   ngOnInit(): void {
+    if (this.data) {
+      this.title = this.data.title;
+      this.description = this.data.description;
+      this.isEditMode = this.data.isEditMode
+    }
   }
 
   onCancelClick(): void {
@@ -20,6 +30,6 @@ export class NoteComponent implements OnInit {
   }
 
   onAddClick(): void {
-    this.dialogRef.close();
+    this.dialogRef.close({title: this.title, description: this.description});
   }
 }

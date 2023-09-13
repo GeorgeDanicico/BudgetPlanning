@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Add Note</h1>
+<h1 mat-dialog-title>{{isEditMode ? 'Edit Note' : 'Add Note'}}</h1>
 <div mat-dialog-content>
   <mat-form-field>
     <input matInput placeholder="Title" [(ngModel)]="this.title">

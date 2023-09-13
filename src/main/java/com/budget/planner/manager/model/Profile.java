@@ -34,7 +34,7 @@ import java.util.Set;
 public class Profile implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "profile_id")
     private Long id;
 
     @Column(
@@ -61,6 +61,9 @@ public class Profile implements UserDetails {
     @ManyToOne
     @JoinColumn(name="role_id", nullable = false)
     private Role role;
+
+    @OneToMany(mappedBy = "profile")
+    private Set<Note> notes;
 
     public Profile(
             String username,

@@ -10,7 +10,7 @@
   <div class="notes-card-container">
     <li *ngFor="let note of notes">
     <mat-card class="notes-card">
-      <div class="notes-card-content">
+      <div class="notes-card-content" (click)="editNote(note.title, note.description)">
         <mat-card-header>
           <mat-card-title>{{note.title}}</mat-card-title>
         </mat-card-header>
