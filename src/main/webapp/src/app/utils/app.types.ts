@@ -9,3 +9,13 @@ export interface INoteData {
     description: string,
     isEditMode: boolean,
 }
+
+export interface NoteResponse {
+    id: string,
+    title: string,
+    description: string,
+}
+
+export interface NotesResponse {
+    notes: NoteResponse[]
+}

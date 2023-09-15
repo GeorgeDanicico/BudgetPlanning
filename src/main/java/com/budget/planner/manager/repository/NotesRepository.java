@@ -7,10 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface NotesRepository extends JpaRepository<Note, Long> {
     List<Note> findByProfile(Profile profile);
+    Optional<Note> findByIdAndProfile(Long id, Profile profile);
     @Transactional
     void deleteById(long id);
 }

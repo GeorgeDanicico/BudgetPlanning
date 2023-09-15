@@ -23,6 +23,8 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
+    public static final String APP_COOKIE = "appCookie";
+
     private final UserService userService;
     private final JwtAuthEntryPoint unauthorizedHandler;
     private final SessionService sessionService;
@@ -71,6 +73,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
+                .httpBasic((basic) -> basic.securityContextRepository(new HttpSessionSecurityContextRepository()))
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                         .maximumSessions(1))
@@ -80,8 +83,8 @@ public class WebSecurityConfig {
                         .anyRequest().authenticated())
                 .securityContext(securityContext ->
                         securityContext
-                                .securityContextRepository(new HttpSessionSecurityContextRepository())
-                                .requireExplicitSave(true))
+                                .requireExplicitSave(true)
+                                .securityContextRepository(new HttpSessionSecurityContextRepository()))
                 .logout((logout) -> logout.logoutUrl("/api/logout") // Customize your logout URL
                         .clearAuthentication(true)
                         .invalidateHttpSession(true)

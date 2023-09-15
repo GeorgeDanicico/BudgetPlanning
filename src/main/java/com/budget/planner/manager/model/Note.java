@@ -1,5 +1,6 @@
 package com.budget.planner.manager.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,6 +30,7 @@ public class Note {
     )
     private String description;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="profile_id", nullable=false)
     private Profile profile;

@@ -11,11 +11,14 @@ import com.budget.planner.manager.repository.ProfileRepository;
 import com.budget.planner.manager.repository.RoleRepository;
 import com.budget.planner.manager.security.SessionService;
 import com.budget.planner.manager.security.Token;
+import com.budget.planner.manager.security.WebSecurityConfig;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -68,7 +71,7 @@ public class AuthController {
         try {
             UserResponse userResponse = new UserResponse(profile.getUsername(),
                     profile.getEmail(), sessionToken.getId());
-            return ResponseEntity.ok(userResponse);
+            return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, getSessionCookie(sessionToken.getId())).body(userResponse);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new MessageResponse(400, e.getMessage()));
         }
@@ -93,6 +96,10 @@ public class AuthController {
         );
         profileRepository.save(profile);
         return ResponseEntity.ok(new MessageResponse(201, "User registered successfully!"));
+    }
+
+    private String getSessionCookie(String sessionId) {
+        return ResponseCookie.from(WebSecurityConfig.APP_COOKIE, sessionId).maxAge(36000000).path("/").httpOnly(true).build().toString();
     }
 
 }

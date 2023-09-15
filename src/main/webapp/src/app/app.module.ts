@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RegisterComponent } from './register/register.component';
@@ -27,6 +27,7 @@ import { AuthorizationService } from './services/authorization-service.service';
 import { NotesComponent } from './notes/notes.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { NoteComponent } from './notes/note/note.component';
+import { AuthorizationInterceptor } from './services/authorization-interceptor';
 
 
 @NgModule({
@@ -61,7 +62,9 @@ import { NoteComponent } from './notes/note/note.component';
     FormsModule,
   ],
   providers: [
-    AuthorizationService
+    AuthorizationService,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthorizationInterceptor, multi: true },
+
   ],
   bootstrap: [AppComponent]
 })

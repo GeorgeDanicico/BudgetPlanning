@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.util.WebUtils;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -36,13 +37,13 @@ public class SessionAuthorizationFilter extends OncePerRequestFilter {
             return;
         }
 
-        final String sessionCookie = request.getHeader("sessionId");
+        var sessionCookie = WebUtils.getCookie(request, WebSecurityConfig.APP_COOKIE);
         if (sessionCookie == null) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        Optional<Token> sessionToken = sessionService.retrieveSessionToken(sessionCookie);
+        Optional<Token> sessionToken = sessionService.retrieveSessionToken(sessionCookie.getValue());
         if (sessionToken.isEmpty()) {
             filterChain.doFilter(request, response);
             return;

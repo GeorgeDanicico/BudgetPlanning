@@ -21,15 +21,8 @@ export class AuthorizationService {
   }
 
   logout(): Observable<Object> {
-    const sessionId = localStorage.getItem('sessionId');
+    localStorage.removeItem('loggedIn');
 
-    if (sessionId) {
-      const headers = new HttpHeaders().set('sessionId', sessionId);
-      const requestOptions = { headers: headers };
-      console.log(headers);
-      return this.http.post(`${ENDPOINTS.LOGOUT}`, {}, requestOptions);
-    } else {
-      return this.http.post(`${ENDPOINTS.LOGOUT}`, {});
-    }
+    return this.http.post(`${ENDPOINTS.LOGOUT}`, {});
   }
 }

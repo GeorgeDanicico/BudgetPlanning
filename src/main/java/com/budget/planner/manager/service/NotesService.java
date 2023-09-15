@@ -1,7 +1,13 @@
 package com.budget.planner.manager.service;
 
+import com.budget.planner.manager.model.Note;
+import com.budget.planner.manager.model.Profile;
+
+import java.util.List;
+
 public interface NotesService {
-    boolean addNote(String title, String description);
-    boolean editNote(Long noteId, String newTitle, String newDescription);
-    boolean deleteNote(Long noteId);
+    void addNote(Profile authenticatedProfile, String title, String description);
+    void editNote(Profile authenticatedProfile, Long noteId, String newTitle, String newDescription);
+    void deleteNote(Profile authenticatedProfile, Long noteId);
+    List<Note> getAllNotesForAuthenticatedUser(Profile authenticatedProfile);
 }

@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
     const password: string = this.form.get('password')?.value;
     this.authorizationService.login(username, password).subscribe((response: ILoginResponse) => {
       if (response) {
-        localStorage.setItem('sessionId', response.sessionId)
+        localStorage.setItem('loggedIn', 'true')
         this.router.navigate(['/dashboard']);
         this.snackBar.open('Logged in successfully.', 'Close', { duration: 3000 });
       }
