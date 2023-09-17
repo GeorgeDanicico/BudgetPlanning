@@ -8,8 +8,8 @@
       <button mat-icon-button (click)="logout()">
         <mat-icon>exit_to_app</mat-icon>
       </button>
-    </mat-toolbar>
-  
+    </mat-toolbar>                
+
     <mat-sidenav-container class="sidenav-container">
       <mat-sidenav #sidenav mode="side" [opened]="isSidenavOpen">
         <mat-nav-list>
@@ -17,9 +17,9 @@
             <mat-icon>dashboard</mat-icon>
             <span class="nav-label">Dashboard</span>
           </a>
-          <a mat-list-item routerLink="/todos" routerLinkActive="active-link">
-            <mat-icon>dashboard</mat-icon>
-            <span class="nav-label">My Todos</span>
+          <a mat-list-item routerLink="/notes" routerLinkActive="active-link">
+            <mat-icon>note</mat-icon>
+            <span class="nav-label">My Notes</span>
           </a>
           <a mat-list-item routerLink="/profile" routerLinkActive="active-link">
             <mat-icon>person</mat-icon>

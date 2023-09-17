@@ -6,7 +6,7 @@ import com.budget.planner.manager.model.Profile;
 import java.util.List;
 
 public interface NotesService {
-    void addNote(Profile authenticatedProfile, String title, String description);
+    Note addNote(Profile authenticatedProfile, String title, String description);
     void editNote(Profile authenticatedProfile, Long noteId, String newTitle, String newDescription);
     void deleteNote(Profile authenticatedProfile, Long noteId);
     List<Note> getAllNotesForAuthenticatedUser(Profile authenticatedProfile);

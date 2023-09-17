@@ -1,5 +1,6 @@
 package com.budget.planner.manager.auth;
 
+import com.budget.planner.manager.dto.responses.MessageResponse;
 import com.budget.planner.manager.exceptions.AppException;
 import com.budget.planner.manager.model.Note;
 import com.budget.planner.manager.model.Profile;
@@ -42,8 +43,8 @@ public class NotesController {
         String authenticatedUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         Profile authenticatedProfile = profileRepository.findByUsername(authenticatedUsername).orElseThrow(() -> new AppException("400", "Invalid Authentication"));
 
-        notesService.addNote(authenticatedProfile, noteRequest.title(), noteRequest.description());
-        return new ResponseEntity<>("Note Added successfully", HttpStatus.CREATED);
+        Note addedNote = notesService.addNote(authenticatedProfile, noteRequest.title(), noteRequest.description());
+        return new ResponseEntity<>(new AddedNoteResponse(201, "Note added successfully", addedNote), HttpStatus.CREATED);
     }
 
     @PutMapping("/notes/{noteId}")
@@ -53,7 +54,7 @@ public class NotesController {
         Profile authenticatedProfile = profileRepository.findByUsername(authenticatedUsername).orElseThrow(() -> new AppException("400", "Invalid Authentication"));
 
         notesService.editNote(authenticatedProfile, noteId, noteRequest.title(), noteRequest.description());
-        return new ResponseEntity<>("Note updated successfully", HttpStatus.OK);
+        return new ResponseEntity<>(new MessageResponse(200, "Note updated successfully"), HttpStatus.OK);
     }
 
     @DeleteMapping("/notes/{noteId}")
@@ -62,9 +63,11 @@ public class NotesController {
         Profile authenticatedProfile = profileRepository.findByUsername(authenticatedUsername).orElseThrow(() -> new AppException("400", "Invalid Authentication"));
 
         notesService.deleteNote(authenticatedProfile, noteId);
-        return new ResponseEntity<>("Note added successfully", HttpStatus.CREATED);
+        return new ResponseEntity<>(new MessageResponse(200, "Note deleted successfully"), HttpStatus.CREATED);
     }
 }
 
 record NoteRequest(String title, String description) {
 }
+
+record AddedNoteResponse(int status, String message, Note note) {}

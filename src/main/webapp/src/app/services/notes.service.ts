@@ -19,11 +19,11 @@ export class NotesService {
   }
 
   editNote(noteId: number, title: string, description: string) {
-    return this.http.post(`${SERVER_URL}${ENDPOINTS.NOTES}/${noteId}`, { title: title, description: description});
+    return this.http.put(`${SERVER_URL}${ENDPOINTS.NOTES}/${noteId}`, { title: title, description: description});
   }
 
-  deleteNote() {
-
+  deleteNote(noteId: number) {
+    return this.http.delete(`${SERVER_URL}${ENDPOINTS.NOTES}/${noteId}`);
   }
 
 }

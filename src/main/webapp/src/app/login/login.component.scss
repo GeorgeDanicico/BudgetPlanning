@@ -37,7 +37,16 @@ mat-card {
             button {
                 padding: 0 135px;
                 margin-top: 30px;
+                height: 40px;
+                width: 300px;
                 background: #ffb80a !important;
+                display: flex;
+
+                // .loading-spinner {
+                //     position: relative;
+                //     margin: auto;
+                //     color: white !important;
+                // }
             }
 
             a {
@@ -50,18 +59,20 @@ mat-card {
             padding-bottom: 8px;
         }
 
-        .access {
-            text-align: center;
+        a {
+            margin-top: 20px;
+            text-decoration: none;
+            color: inherit;
 
-            a {
-                text-decoration: none;
-                color: inherit;
-
-                &:hover {
-                    text-decoration: underline;
-                }
+            &:hover {
+                text-decoration: underline;
             }
         }
+        
+    }
 
+    mat-progress-bar .loading-progress .mat-progress-bar-fill::after {
+        background-color: #ffb80a !important;
+        width: 1000px;
     }
 }

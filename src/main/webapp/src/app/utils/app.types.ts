@@ -10,12 +10,18 @@ export interface INoteData {
     isEditMode: boolean,
 }
 
-export interface NoteResponse {
-    id: string,
+export interface Note {
+    id: number,
     title: string,
     description: string,
 }
 
 export interface NotesResponse {
-    notes: NoteResponse[]
+    notes: Note[]
+}
+
+export interface AddNoteResponse {
+    status: number,
+    message: string,
+    note: Note,
 }

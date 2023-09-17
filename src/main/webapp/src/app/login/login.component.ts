@@ -24,19 +24,17 @@ export class LoginComponent implements OnInit {
     this.form.addControl('password', new FormControl('', [Validators.required]));
   }
 
-  public log() {
-    console.log(this.form.valid);
-  }
-
   public login() {
     const username: string = this.form.get('username')?.value;
     const password: string = this.form.get('password')?.value;
+    this.isLoading = true;
     this.authorizationService.login(username, password).subscribe((response: ILoginResponse) => {
       if (response) {
         localStorage.setItem('loggedIn', 'true')
         this.router.navigate(['/dashboard']);
         this.snackBar.open('Logged in successfully.', 'Close', { duration: 3000 });
       }
+      this.isLoading = false;
     })
   }
 

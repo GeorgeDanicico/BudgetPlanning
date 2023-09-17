@@ -13,6 +13,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule, MatError } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -26,7 +27,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthorizationService } from './services/authorization-service.service';
 import { NotesComponent } from './notes/notes.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
-import { NoteComponent } from './notes/note/note.component';
+import { NoteComponent } from './notes/add-edit-note/note.component';
 import { AuthorizationInterceptor } from './services/authorization-interceptor';
 
 
@@ -45,6 +46,7 @@ import { AuthorizationInterceptor } from './services/authorization-interceptor';
     MatCardModule,
     MatFormFieldModule,
     MatIconModule,
+    MatProgressBarModule,
     MatProgressSpinnerModule,
     MatToolbarModule,
     MatInputModule,
