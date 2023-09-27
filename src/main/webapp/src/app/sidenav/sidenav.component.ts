@@ -13,6 +13,7 @@ export class SidenavComponent implements OnInit {
   isSidenavOpen: boolean = false;
   showDashboardComponent: boolean = false;
   showNotesComponent: boolean = false;
+  showCalendarComponent: boolean = false;
 
   constructor(private authorizationService: AuthorizationService,
               private router: Router,
@@ -26,6 +27,7 @@ export class SidenavComponent implements OnInit {
   private getRoute(): void {
     const dashboardUrl = "dashboard";
     const notesUrl = "notes";
+    const calendarUrl = 'calendar';
     const currentRoute = this.route.snapshot.routeConfig?.path
 
     switch(currentRoute) {
@@ -34,6 +36,9 @@ export class SidenavComponent implements OnInit {
         break;
       case notesUrl:
         this.showNotesComponent = true;
+        break;
+      case calendarUrl:
+        this.showCalendarComponent = true;
         break;
       default:
         break;

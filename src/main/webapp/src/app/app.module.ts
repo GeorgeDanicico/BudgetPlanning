@@ -30,6 +30,13 @@ import { SidenavComponent } from './sidenav/sidenav.component';
 import { NoteComponent } from './notes/add-edit-note/note.component';
 import { AuthorizationInterceptor } from './services/authorization-interceptor';
 
+import { FullCalendarModule } from '@fullcalendar/angular';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction'; // For drag-and-drop events
+import { CalendarComponent } from './calendar/calendar.component';
+
+
 
 @NgModule({
   declarations: [
@@ -40,6 +47,7 @@ import { AuthorizationInterceptor } from './services/authorization-interceptor';
     NotesComponent,
     SidenavComponent,
     NoteComponent,
+    CalendarComponent,
   ],
   imports: [
     MatNativeDateModule,
@@ -62,6 +70,7 @@ import { AuthorizationInterceptor } from './services/authorization-interceptor';
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
+    FullCalendarModule,
   ],
   providers: [
     AuthorizationService,
