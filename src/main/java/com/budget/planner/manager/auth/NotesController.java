@@ -65,9 +65,11 @@ public class NotesController {
         notesService.deleteNote(authenticatedProfile, noteId);
         return new ResponseEntity<>(new MessageResponse(200, "Note deleted successfully"), HttpStatus.CREATED);
     }
+
+    public record NoteRequest(String title, String description) {
+    }
+
+    public record AddedNoteResponse(int status, String message, Note note) {}
+
 }
 
-record NoteRequest(String title, String description) {
-}
-
-record AddedNoteResponse(int status, String message, Note note) {}
