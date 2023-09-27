@@ -9,6 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./sidenav.component.scss']
 })
 export class SidenavComponent implements OnInit {
+  isLoading: boolean = false;
   isSidenavOpen: boolean = false;
   showDashboardComponent: boolean = false;
   showNotesComponent: boolean = false;
@@ -24,20 +25,24 @@ export class SidenavComponent implements OnInit {
 
   private getRoute(): void {
     const dashboardUrl = "dashboard";
-    const todosUrl = "todos";
+    const notesUrl = "notes";
     const currentRoute = this.route.snapshot.routeConfig?.path
 
     switch(currentRoute) {
       case dashboardUrl:
         this.showDashboardComponent = true;
         break;
-      case todosUrl:
+      case notesUrl:
         this.showNotesComponent = true;
         break;
       default:
         break;
     }
   }
+
+  // isDataFetching(value: boolean) {
+  //   this.isLoading = value;
+  // }
 
   toggleSidenav() {
     this.isSidenavOpen = !this.isSidenavOpen;

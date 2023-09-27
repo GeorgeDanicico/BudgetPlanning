@@ -1,3 +1,4 @@
+<mat-progress-bar class="loading-progress" mode="indeterminate" *ngIf="isLoading" color="accent"></mat-progress-bar>
 <div class="notes-container">
   <div class="header-container">
     <mat-card-header>
@@ -9,20 +10,20 @@
   </div>
   <div class="notes-card-container">
     <li *ngFor="let note of notes">
-    <mat-card class="notes-card">
-      <div class="notes-card-content" (click)="editNote(note.title, note.description)">
-        <mat-card-header>
-          <mat-card-title>{{note.title}}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p class="description-content">{{note.description}}</p>
-        </mat-card-content>
-      </div>
+      <mat-card class="notes-card" [@slideAndFade]="'in'">
+        <div class="notes-card-content" (click)="editNote(note.id, note.title, note.description)">
+          <mat-card-header>
+            <mat-card-title>{{note.title}}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p class="description-content">{{note.description}}</p>
+          </mat-card-content>
+        </div>
 
-      <button mat-flat-button class="delete-button">
-        <mat-icon>delete</mat-icon>
-      </button>
-    </mat-card>
+        <button mat-flat-button class="delete-button" (click)="deleteNote(note.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-card>
 
     </li>
   </div>

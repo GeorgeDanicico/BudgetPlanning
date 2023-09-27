@@ -24,7 +24,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'todos',
+    path: 'notes',
     component: SidenavComponent,
     canActivate: [AuthGuard]
   }

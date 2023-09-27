@@ -16,14 +16,14 @@
                     <mat-error>Password is required</mat-error>
                 </mat-form-field>
                 <mat-card-actions>
-                    <button mat-raised-button color="primary" (click)="login()" type="submit" data-qa="login-button" (disabled)="!this.form.valid">Login</button>
-                    <a routerLink="/register">Don't have an account? Register now!</a>
+                    <button class="login-button" mat-raised-button color="primary" (disabled)="isLoading" (click)="login()" type="submit" data-qa="login-button" (disabled)="!this.form.valid">
+                        Login
+                    </button>
+                    <a class="access"routerLink="/register">Don't have an account? Register now!</a>
                 </mat-card-actions>
+                <mat-progress-bar class="loading-progress" mode="indeterminate" *ngIf="isLoading" color="accent"></mat-progress-bar>
             </form>
         </mat-card-content>
     </mat-card>
-    <mat-spinner *ngIf="isLoading"></mat-spinner>
-
-    
 </div>
 

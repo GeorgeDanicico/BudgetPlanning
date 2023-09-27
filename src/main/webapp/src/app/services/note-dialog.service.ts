@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { NoteComponent } from '../notes/note/note.component';
+import { NoteComponent } from '../notes/add-edit-note/note.component';
 import { INoteData } from '../utils/app.types';
 
 @Injectable({

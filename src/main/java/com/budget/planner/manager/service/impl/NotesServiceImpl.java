@@ -27,7 +27,7 @@ public class NotesServiceImpl implements NotesService {
     }
 
     @Override
-    public void addNote(Profile authenticatedProfile, String title, String description) {
+    public Note addNote(Profile authenticatedProfile, String title, String description) {
         logger.info("Add note with title: {} and description: {}", title, description);
         if (StringUtils.isBlank(title)) {
             throw new AppException("400", "Invalid Data Received");
@@ -40,9 +40,11 @@ public class NotesServiceImpl implements NotesService {
                 .description(description)
                 .profile(authenticatedProfile)
                 .build();
-        notesRepository.save(newNote);
+        Note addedNote = notesRepository.save(newNote);
         logger.info("Note has been successfully added with title: {} and description: {} by profile with id: {}",
                 title, description, authenticatedProfile.getId());
+
+        return addedNote;
     }
 
     @Override
