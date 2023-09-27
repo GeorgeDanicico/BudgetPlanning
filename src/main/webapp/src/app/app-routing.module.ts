@@ -6,6 +6,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
 import { NotesComponent } from './notes/notes.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
+import { CalendarComponent } from './calendar/calendar.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -25,6 +26,11 @@ const routes: Routes = [
   },
   {
     path: 'notes',
+    component: SidenavComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'calendar',
     component: SidenavComponent,
     canActivate: [AuthGuard]
   }

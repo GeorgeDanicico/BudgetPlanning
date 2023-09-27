@@ -21,6 +21,10 @@
             <mat-icon>note</mat-icon>
             <span class="nav-label">My Notes</span>
           </a>
+          <a mat-list-item routerLink="/calendar" routerLinkActive="active-link">
+            <mat-icon>calendar_today</mat-icon>
+            <span class="nav-label">Calendar</span>
+          </a>
           <a mat-list-item routerLink="/profile" routerLinkActive="active-link">
             <mat-icon>person</mat-icon>
             <span class="nav-label">Profile</span>
@@ -37,6 +41,8 @@
         <!-- Your dashboard content goes here -->
         <app-dashboard *ngIf="showDashboardComponent"></app-dashboard>
         <app-notes *ngIf="showNotesComponent"></app-notes>
+        <app-calendar *ngIf="showCalendarComponent"></app-calendar>
+
       </mat-sidenav-content>
     </mat-sidenav-container>
   </div>
