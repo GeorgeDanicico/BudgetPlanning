@@ -3,6 +3,9 @@ import { CalendarOptions, DateSelectArg, EventApi, EventClickArg } from '@fullca
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
+import { DialogService } from '../services/dialog.service';
+import { EventsService } from '../services/events.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-calendar',
@@ -11,7 +14,12 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 })
 export class CalendarComponent implements OnInit {
 
-  constructor(private changeDetector: ChangeDetectorRef) { }
+  public events: any[] = [];
+
+  constructor(private changeDetector: ChangeDetectorRef,
+    private eventDialogService: DialogService,
+    private eventsService: EventsService,
+    private snackBar: MatSnackBar) { }
 
   calendarOptions: CalendarOptions = {
     initialView: 'dayGridMonth',
@@ -25,7 +33,7 @@ export class CalendarComponent implements OnInit {
       center: 'title',
       right: 'dayGridMonth,timeGridWeek,timeGridDay',
     },
-
+    events: this.events,
     weekends: true,
     editable: true,
     selectable: true,
@@ -43,20 +51,25 @@ export class CalendarComponent implements OnInit {
   }
 
   handleDateSelect(selectInfo: DateSelectArg) {
-    const title = prompt('Please enter a new title for your event');
+    const dialogRef = this.eventDialogService.openEventDialog();
     const calendarApi = selectInfo.view.calendar;
-
+    console.log(selectInfo);
     calendarApi.unselect(); // clear date selection
 
-    if (title) {
-      calendarApi.addEvent({
-        id: '1',
-        title,
-        start: selectInfo.startStr,
-        end: selectInfo.endStr,
-        allDay: selectInfo.allDay
-      });
-    }
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.eventsService.addEvent(result.title, result.description, result.start, result.end, result.allDay).subscribe((response: any) => {
+          if (response.status === 201) {
+            const addedEvent = response.note;
+            this.events.push(addedEvent);
+            this.changeDetector.detectChanges();
+            console.log('Note added:', result);
+            this.snackBar.open("Note added successfully.", 'Close');
+          }
+        })
+
+      }
+    });
   }
 
   handleEventClick(clickInfo: EventClickArg) {
@@ -67,7 +80,7 @@ export class CalendarComponent implements OnInit {
 
   handleEvents(events: EventApi[]) {
     this.currentEvents = events ;
-    this.changeDetector.detectChanges(); // workaround for pressionChangedAfterItHasBeenCheckedError
+    this.changeDetector.detectChanges();
   }
 
 }

@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { NoteDialogService } from '../services/note-dialog.service';
+import { DialogService } from '../services/dialog.service';
 import { INoteData, Note } from '../utils/app.types';
 import { NotesService } from '../services/notes.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -23,7 +23,7 @@ export class NotesComponent implements OnInit {
   isLoading: boolean = false;
   notes: Note[] = [];
 
-  constructor(private noteDialogService: NoteDialogService,
+  constructor(private noteDialogService: DialogService,
               private notesService: NotesService,
               private snackBar: MatSnackBar,
               private changeDetector: ChangeDetectorRef) { }
