@@ -8,7 +8,6 @@ import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-/** Pass untouched request through to the next request handler. */
 @Injectable()
 export class AuthorizationInterceptor implements HttpInterceptor {
   constructor(private router: Router,
