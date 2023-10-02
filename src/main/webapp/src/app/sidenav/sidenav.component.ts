@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthorizationService } from '../services/authorization-service.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DialogService } from '../services/dialog.service';
 
 @Component({
   selector: 'app-sidenav',
@@ -18,7 +19,8 @@ export class SidenavComponent implements OnInit {
   constructor(private authorizationService: AuthorizationService,
               private router: Router,
               private snackBar: MatSnackBar,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private dialogService: DialogService) { }
 
   ngOnInit(): void {
     this.getRoute();
@@ -54,10 +56,15 @@ export class SidenavComponent implements OnInit {
   }
 
   logout() {
-    this.authorizationService.logout().subscribe((response) => {
-      localStorage.removeItem('sessionId');
-      this.router.navigate(['/login']);
-      this.snackBar.open('Logged out successfully.', 'Close', { duration: 3000 });
-    });
+    const dialogRef = this.dialogService.openConfirmationDialog({title: 'Confirm', description: 'Are you sure you want to log out?', label: 'Logout'});
+
+    dialogRef.afterClosed().subscribe(response => {
+      if (response === true) {
+        this.authorizationService.logout().subscribe((response) => {
+          this.router.navigate(['/login']);
+          this.snackBar.open('Logged out successfully.', 'Close', { duration: 3000 });
+        });
+      }
+    }) 
   }
 }

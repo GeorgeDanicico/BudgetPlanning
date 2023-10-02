@@ -6,9 +6,11 @@ mat-toolbar {
     z-index: 2;
     background: #ffb80a !important;
 
-    span {
+    .page-title {
         margin: 0 auto;
-    }
+        font-family: 'Courier New', monospace;
+        font-size: 30px;
+      }
 }
 
 mat-card {
