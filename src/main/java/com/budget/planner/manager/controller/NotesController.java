@@ -1,4 +1,4 @@
-package com.budget.planner.manager.auth;
+package com.budget.planner.manager.controller;
 
 import com.budget.planner.manager.dto.responses.MessageResponse;
 import com.budget.planner.manager.exceptions.AppException;

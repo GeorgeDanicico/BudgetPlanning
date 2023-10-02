@@ -39,6 +39,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction'; // For drag-and-drop events
 import { CalendarComponent } from './calendar/calendar.component';
 import { EventComponent } from './calendar/event/event.component';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 
 
 
@@ -53,6 +54,7 @@ import { EventComponent } from './calendar/event/event.component';
     NoteComponent,
     CalendarComponent,
     EventComponent,
+    ConfirmationDialogComponent,
   ],
   imports: [
     MatNativeDateModule,

@@ -1,6 +1,7 @@
 package com.budget.planner.manager.exceptions;
 
 public class AppException extends RuntimeException {
+
     private final String errorCode;
     private final String errorMessage;
 

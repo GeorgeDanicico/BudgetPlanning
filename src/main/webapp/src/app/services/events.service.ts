@@ -10,20 +10,20 @@ export class EventsService {
   constructor(private http: HttpClient) { }
 
   getAllEvents() {
-    return this.http.get<any[]>(`${SERVER_URL}${ENDPOINTS.NOTES}`);
+    return this.http.get<any[]>(`${SERVER_URL}${ENDPOINTS.EVENTS}`);
   }
 
 
   addEvent(title: string, description: string, start: string, end: string, allDay: boolean) {
-    return this.http.post(`${SERVER_URL}${ENDPOINTS.NOTES}`, { title: title, description: description, start: start, end: end,
+    return this.http.post(`${SERVER_URL}${ENDPOINTS.EVENTS}`, { title: title, description: description, start: start, end: end,
       allDay: allDay});
   }
 
-  editEvent(noteId: number, title: string, description: string) {
-    return this.http.put(`${SERVER_URL}${ENDPOINTS.NOTES}/${noteId}`, { title: title, description: description});
-  }
+  // editEvent(eventId: number, title: string, description: string) {
+  //   return this.http.put(`${SERVER_URL}${ENDPOINTS.EVENTS}/${eventId}`, { title: title, description: description});
+  // }
 
-  deleteEvent(noteId: number) {
-    return this.http.delete(`${SERVER_URL}${ENDPOINTS.NOTES}/${noteId}`);
+  deleteEvent(eventId: string) {
+    return this.http.delete(`${SERVER_URL}${ENDPOINTS.EVENTS}/${eventId}`);
   }
 }
