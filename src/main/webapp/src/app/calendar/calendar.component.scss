@@ -1,0 +1,10 @@
+.calendar-container {
+    margin: 10px 20px;
+    display: flex;
+    height: 100%;
+
+    .calendar-component {
+        width: 90%;
+        overflow-y: auto;
+    }
+}

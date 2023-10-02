@@ -1,0 +1,60 @@
+<div class="event-container">
+    <h1 mat-dialog-title>{{isEditMode ? 'Edit Event' : 'Add Event'}}</h1>
+    <div mat-dialog-content class="event-form-container">
+      <mat-form-field>
+        <input matInput placeholder="Title" [(ngModel)]="title">
+      </mat-form-field>
+      <mat-form-field>
+        <textarea matInput placeholder="Description" [(ngModel)]="description"></textarea>
+      </mat-form-field>
+      <mat-checkbox [checked]="this.allDay" (change)="setAllDay()">All day</mat-checkbox>
+      <div *ngIf="!this.allDay" class="time-selector-container">
+        <mat-form-field class="time-field">
+          <mat-label>Start Hour</mat-label>
+          <mat-select [(ngModel)]="startHour" name="startHour">
+            <mat-option></mat-option>
+              <mat-option *ngFor="let hour of this.hours" [value]="hour">
+                  {{hour}}
+              </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="time-field">
+          <mat-label>Start Min</mat-label>
+          <mat-select [(value)]="startMinutes" name="startMinutes">
+              <mat-option></mat-option>
+              <mat-option *ngFor="let min of this.minutes" [value]="min">
+                  {{min}}
+              </mat-option>
+          </mat-select>
+        </mat-form-field>
+    </div>
+
+    <div *ngIf="!this.allDay" class="time-selector-container">
+      <mat-form-field class="time-field">
+        <mat-label>End Hour</mat-label>
+        <mat-select [(value)]="endHour" name="endHour">
+          <mat-option></mat-option>
+            <mat-option *ngFor="let hour of this.hours" [value]="hour">
+                {{hour}}
+            </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="time-field">
+        <mat-label>End Min</mat-label>
+        <mat-select [(value)]="endMinutes" name="endMinutes">
+          <mat-option></mat-option>
+            <mat-option *ngFor="let min of this.minutes" [value]="min">
+                {{min}}
+            </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-button (click)="onCancelClick()">Cancel</button>
+      <button mat-button class="add-button" (click)="onAddClick()">Add</button>
+    </div>
+  </div>
+  

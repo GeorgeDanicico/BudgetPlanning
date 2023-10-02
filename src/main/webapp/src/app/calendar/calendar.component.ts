@@ -1,8 +1,11 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { CalendarOptions, DateSelectArg, EventApi, EventClickArg } from '@fullcalendar/core';
+import { CalendarOptions, DateSelectArg, EventApi, EventClickArg, EventInput } from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
+import { DialogService } from '../services/dialog.service';
+import { EventsService } from '../services/events.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-calendar',
@@ -11,7 +14,13 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 })
 export class CalendarComponent implements OnInit {
 
-  constructor(private changeDetector: ChangeDetectorRef) { }
+  public events: EventInput[] = [];
+  public isLoading: boolean = false;
+
+  constructor(private changeDetector: ChangeDetectorRef,
+    private eventDialogService: DialogService,
+    private eventsService: EventsService,
+    private snackBar: MatSnackBar) { }
 
   calendarOptions: CalendarOptions = {
     initialView: 'dayGridMonth',
@@ -25,49 +34,99 @@ export class CalendarComponent implements OnInit {
       center: 'title',
       right: 'dayGridMonth,timeGridWeek,timeGridDay',
     },
-
+    unselectCancel: '.event-container',
+    // events: [
+    //   { title: 'event 1', date: '2023-10-01' },
+    //   { title: 'event 2', date: '2023-10-02' },
+    //   { title: 'event 3', end: '2023-10-06T18:30:00.000Z', start: '2023-10-06T16:30:00.000Z'}
+    // ],
     weekends: true,
     editable: true,
+    fixedWeekCount: false,
+    businessHours: true,
     selectable: true,
     selectMirror: true,
     dayMaxEvents: true,
     select: this.handleDateSelect.bind(this),
+    eventResizeStart: () => console.log("enter resizing"),
     eventClick: this.handleEventClick.bind(this),
     eventsSet: this.handleEvents.bind(this)
   };
 
   currentEvents: EventApi[] = [];
 
+  private fetchEvents() {
+    this.isLoading = true;
+    this.eventsService.getAllEvents().subscribe((result) => {
+      this.events = result;
+      console.log(this.events);
+      this.isLoading = false;
+    })
+  }
 
   ngOnInit(): void {
+    this.fetchEvents();
   }
 
   handleDateSelect(selectInfo: DateSelectArg) {
-    const title = prompt('Please enter a new title for your event');
     const calendarApi = selectInfo.view.calendar;
-
-    calendarApi.unselect(); // clear date selection
-
-    if (title) {
-      calendarApi.addEvent({
-        id: '1',
-        title,
-        start: selectInfo.startStr,
-        end: selectInfo.endStr,
-        allDay: selectInfo.allDay
-      });
+    console.log( selectInfo.startStr, selectInfo.endStr);
+    const eventData = {
+      start: selectInfo.startStr,
+      end: selectInfo.endStr,
+      allDay: selectInfo.allDay
     }
+
+    const dialogRef = this.eventDialogService.openEventDialog(eventData);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.isLoading = true;
+        this.eventsService.addEvent(result.title, result.description, result.start, result.end, result.allDay).subscribe((response: any) => {
+          console.log(response);
+          if (response.status === 201) {
+            const addedEvent = response.event;
+            this.events.push(addedEvent);
+            calendarApi.addEvent({
+              id: response.event.id,
+              title: result.title,
+              start: selectInfo.startStr,
+              end: selectInfo.endStr,
+              allDay: selectInfo.allDay
+            });
+            calendarApi.unselect();
+            console.log('Event added:', result);
+            this.snackBar.open("Event added successfully.", 'Close', { duration: 3000 });
+          } else {
+            calendarApi.unselect();
+          }
+          this.isLoading = false;
+        })
+      } else {
+        calendarApi.unselect();
+      }
+    }, (error) => {
+      this.isLoading = false;
+      this.snackBar.open("An error has occured", 'Close', { duration: 3000 });
+      // calendarApi.unselect();
+    });
+    this.changeDetector.detectChanges();
   }
 
   handleEventClick(clickInfo: EventClickArg) {
-    if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-      clickInfo.event.remove();
-    }
+    const dialogRef = this.eventDialogService.openConfirmationDialog({title: 'Confirm', description: 'Are you sure you want to delete this event?', label: 'Delete'});
+    dialogRef.afterClosed().subscribe(response => {
+      if (response === true) {
+        this.eventsService.deleteEvent(clickInfo.event.id).subscribe(result => {
+          this.events.filter(event => event.id?.toString() !== clickInfo.event.id)
+          clickInfo.event.remove();
+          this.snackBar.open("The event has been deleted", 'Close', { duration: 3000 });
+        });
+      }
+    })
   }
 
   handleEvents(events: EventApi[]) {
     this.currentEvents = events ;
-    this.changeDetector.detectChanges(); // workaround for pressionChangedAfterItHasBeenCheckedError
+    this.changeDetector.detectChanges();
   }
-
 }

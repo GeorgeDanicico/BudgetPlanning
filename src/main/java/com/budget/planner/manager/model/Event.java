@@ -2,17 +2,20 @@ package com.budget.planner.manager.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Entity(name = "notes")
+@Entity(name = "events")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Note {
+public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "note_id")
+    @Column(name = "event_id")
     private Long id;
 
     @Column(
@@ -28,6 +31,27 @@ public class Note {
             nullable = false
     )
     private String description;
+
+    @Column(
+            name = "startTime",
+            columnDefinition = "varchar(50)",
+            nullable = false
+    )
+    private String start;
+
+    @Column(
+            name = "endTime",
+            columnDefinition = "varchar(50)",
+            nullable = false
+    )
+    private String end;
+
+    @Column(
+            name = "allDay",
+            columnDefinition = "boolean",
+            nullable = false
+    )
+    private Boolean allDay;
 
     @JsonIgnore
     @ManyToOne

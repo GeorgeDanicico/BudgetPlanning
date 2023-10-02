@@ -1,3 +1,7 @@
-<div>
-    <full-calendar [options]="calendarOptions"></full-calendar>
+    <mat-progress-bar class="loading-progress" mode="indeterminate" *ngIf="isLoading" color="accent"></mat-progress-bar>
+<div class="calendar-container">
+    <div class="calendar-component">
+        <full-calendar #calendar [options]="calendarOptions"
+            [events]="this.events"></full-calendar>
+    </div>
 </div>

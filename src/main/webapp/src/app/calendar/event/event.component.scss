@@ -1,0 +1,24 @@
+.event-container {
+    display: flex;
+    flex-direction: column;
+
+    .event-form-container {
+        display: flex;
+        flex-direction: column;
+
+        .time-selector-container {
+            display: flex;
+
+            .time-field {
+                margin-right: 20px;
+                width: 100px;
+            }
+        }
+    }
+
+
+    .add-button { 
+        background: #ffb80a !important;
+        color: white;
+    }
+}

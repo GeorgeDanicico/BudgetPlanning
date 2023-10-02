@@ -18,12 +18,15 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule, MatError } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { AuthorizationService } from './services/authorization-service.service';
 import { NotesComponent } from './notes/notes.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
@@ -35,6 +38,8 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction'; // For drag-and-drop events
 import { CalendarComponent } from './calendar/calendar.component';
+import { EventComponent } from './calendar/event/event.component';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 
 
 
@@ -48,6 +53,8 @@ import { CalendarComponent } from './calendar/calendar.component';
     SidenavComponent,
     NoteComponent,
     CalendarComponent,
+    EventComponent,
+    ConfirmationDialogComponent,
   ],
   imports: [
     MatNativeDateModule,
@@ -64,6 +71,8 @@ import { CalendarComponent } from './calendar/calendar.component';
     MatDialogModule,
     MatListModule,
     MatDatepickerModule,
+    MatCheckboxModule,
+    MatSelectModule,
     ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,
