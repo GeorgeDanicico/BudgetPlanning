@@ -14,7 +14,7 @@ mat-toolbar {
 }
 
 mat-card {
-    height: 425px;
+    height: 450px;
     width: 350px;
     top: 175px;
     left: 0;
@@ -42,8 +42,19 @@ mat-card {
                 background: #ffb80a !important;
             }
 
-            a {
+            mat-progress-bar .loading-progress .mat-progress-bar-fill::after {
+                background-color: #ffb80a !important;
+                width: 1000px;
+            }
 
+            a {
+                margin-top: 15px;
+                text-decoration: none;
+                color: inherit;
+    
+                &:hover {
+                    text-decoration: underline;
+                }
             }
         }
 

@@ -44,8 +44,8 @@
                     <button mat-raised-button color="primary" (click)="register()" type="submit" data-qa="register-button">Register</button>
                     <a routerLink="/login">Already have an account? Login now!</a>
                 </mat-card-actions>
+                <mat-progress-bar class="loading-progress" mode="indeterminate" *ngIf="isLoading" color="accent"></mat-progress-bar>
             </form>
         </mat-card-content>
     </mat-card>
-    <mat-spinner *ngIf="isLoading"></mat-spinner>
 </div>
