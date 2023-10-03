@@ -17,9 +17,12 @@ export function registerPasswordValidator(): ValidatorFn {
             if (confirmPasswordControl.value !== '' && confirmPasswordControl.value !== '' && passwordControl.value !== confirmPasswordControl.value) {
                 confirmPasswordControl.setErrors({passwordNotMatch: true});
                 passwordControl.setErrors({passwordNotMatch: true});
-                console.log(passwordControl);
-                console.log(confirmPasswordControl);
                 return null;
+            } else {
+                if (confirmPasswordControl.value === passwordControl.value && passwordControl.value !== '') {
+                    confirmPasswordControl.setErrors(null)
+                    passwordControl.setErrors(null);
+                }
             }
         }
         return null;

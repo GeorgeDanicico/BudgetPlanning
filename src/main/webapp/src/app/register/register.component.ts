@@ -33,10 +33,12 @@ export class RegisterComponent implements OnInit {
     const username: string = this.form.get('username')?.value;
     const email: string = this.form.get('email')?.value;
     const password: string = this.form.get('password')?.value;
+    this.isLoading = true;
     this.authorizationService.register(username, password, email).subscribe((response: any) => {
       if (response?.status == 201) {
         this.snackBar.open('User registered successfully. You can now log in.', 'Close', { duration: 3000 });
       }
+      this.isLoading = false;
     })
   }
 
