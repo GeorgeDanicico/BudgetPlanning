@@ -7,6 +7,7 @@ import { DialogService } from '../services/dialog.service';
 import { EventsService } from '../services/events.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { catchError, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-calendar',
@@ -67,10 +68,19 @@ export class CalendarComponent implements OnInit {
         event.borderColor = event.eventColour;
         event.backgroundColor = event.eventColour;
       })
-      this.events = result;
-      console.log(this.events);
-      this.isLoading = false;
-    })
+    this.eventsService.getAllEvents()
+      .pipe(catchError((error) => {
+        console.error('An error occured: ', error.error);
+        this.isLoading = false;
+        this.snackBar.open('An error has occured while loading the events.', 'Close', { duration: 3000 });
+        return throwError(() => new Error(error.error));
+      }))
+      .subscribe((result) => {
+        this.events = result;
+        console.log(this.events);
+        this.isLoading = false;
+      });
+    });
   }
 
   ngOnInit(): void {
@@ -90,7 +100,14 @@ export class CalendarComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.isLoading = true;
-        this.eventsService.addEvent(result.title, result.description, result.start, result.end, result.allDay, result.eventColour).subscribe((response: any) => {
+        this.eventsService.addEvent(result.title, result.description, result.start, result.end, result.allDay, result.eventColour)
+        .pipe(catchError((error) => {
+          console.error('An error occured: ', error.error);
+          this.isLoading = false;
+          this.snackBar.open('An error has occured.', 'Close', { duration: 3000 });
+          return throwError(() => new Error(error.error));
+        }))
+        .subscribe((response: any) => {
           console.log(response);
           if (response.status === 201) {
             const addedEvent = response.event;
@@ -115,20 +132,22 @@ export class CalendarComponent implements OnInit {
       } else {
         calendarApi.unselect();
       }
-      this.changeDetector.detectChanges();
-    }, (error) => {
-      this.isLoading = false;
-      this.snackBar.open("An error has occured", 'Close', { duration: 3000 });
-      this.changeDetector.detectChanges();
-      calendarApi.unselect();
     });
+    this.changeDetector.detectChanges();
   }
 
   handleEventClick(clickInfo: EventClickArg) {
     const dialogRef = this.eventDialogService.openConfirmationDialog({title: 'Confirm', description: 'Are you sure you want to delete this event?', label: 'Delete'});
     dialogRef.afterClosed().subscribe(response => {
       if (response === true) {
-        this.eventsService.deleteEvent(clickInfo.event.id).subscribe(result => {
+        this.eventsService.deleteEvent(clickInfo.event.id)
+        .pipe(catchError((error) => {
+          console.error('An error occured: ', error.error);
+          this.isLoading = false;
+          this.snackBar.open('An error has occured.', 'Close', { duration: 3000 });
+          return throwError(() => new Error(error.error));
+        }))
+        .subscribe(result => {
           this.events.filter(event => event.id?.toString() !== clickInfo.event.id)
           clickInfo.event.remove();
           this.snackBar.open("The event has been deleted", 'Close', { duration: 3000 });

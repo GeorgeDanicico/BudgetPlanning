@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthorizationService } from '../services/authorization-service.service';
 import { registerPasswordValidator } from '../utils/validators';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { catchError, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -34,7 +35,12 @@ export class RegisterComponent implements OnInit {
     const email: string = this.form.get('email')?.value;
     const password: string = this.form.get('password')?.value;
     this.isLoading = true;
-    this.authorizationService.register(username, password, email).subscribe((response: any) => {
+    this.authorizationService.register(username, password, email).pipe(catchError((error) => {
+      console.error('An error occured: ', error.error);
+      this.isLoading = false;
+      this.snackBar.open('An error has occured while trying to register. Please try again later.', 'Close', { duration: 3000 });
+      return throwError(() => new Error(error.error));
+    })).subscribe((response: any) => {
       if (response?.status == 201) {
         this.snackBar.open('User registered successfully. You can now log in.', 'Close', { duration: 3000 });
       }
