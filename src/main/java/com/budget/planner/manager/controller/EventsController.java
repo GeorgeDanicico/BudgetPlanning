@@ -46,7 +46,7 @@ public class EventsController {
         Profile authenticatedProfile = profileRepository.findByUsername(authenticatedUsername).orElseThrow(() -> new AppException("400", "Invalid Authentication"));
 
         Event addedEvent = eventService.addEvent(authenticatedProfile, eventRequest.title(), eventRequest.description(),
-                eventRequest.start(), eventRequest.end(), eventRequest.allDay());
+                eventRequest.start(), eventRequest.end(), eventRequest.allDay(), eventRequest.eventColour());
         return new ResponseEntity<>(new AddedEventResponse(201, "Event created successfully", addedEvent), HttpStatus.CREATED);
     }
 
@@ -59,7 +59,7 @@ public class EventsController {
         return new ResponseEntity<>(new MessageResponse(200, "Event deleted successfully"), HttpStatus.CREATED);
     }
 
-    private record EventRequest(String title, String description, String start, String end, Boolean allDay) {}
+    private record EventRequest(String title, String description, String start, String end, Boolean allDay, String eventColour) {}
 
     private record AddedEventResponse(int status, String message, Event event) {}
 }
