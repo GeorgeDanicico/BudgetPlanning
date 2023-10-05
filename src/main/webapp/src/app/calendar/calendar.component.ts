@@ -63,11 +63,6 @@ export class CalendarComponent implements OnInit {
 
   private fetchEvents() {
     this.isLoading = true;
-    this.eventsService.getAllEvents().subscribe((result) => {
-      result.forEach(event => {
-        event.borderColor = event.eventColour;
-        event.backgroundColor = event.eventColour;
-      })
     this.eventsService.getAllEvents()
       .pipe(catchError((error) => {
         console.error('An error occured: ', error.error);
@@ -76,12 +71,15 @@ export class CalendarComponent implements OnInit {
         return throwError(() => new Error(error.error));
       }))
       .subscribe((result) => {
+        result.forEach(event => {
+          event.borderColor = event.eventColour;
+          event.backgroundColor = event.eventColour;
+        })
         this.events = result;
         console.log(this.events);
         this.isLoading = false;
       });
-    });
-  }
+    }
 
   ngOnInit(): void {
     this.fetchEvents();
