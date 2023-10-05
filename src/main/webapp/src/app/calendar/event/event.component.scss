@@ -14,11 +14,23 @@
                 width: 100px;
             }
         }
-    }
 
+        .color-picker {
+            display: flex;
+            .color-field {
+                width: 50px;
+            }
+        }
+    }
 
     .add-button { 
         background: #ffb80a !important;
         color: white;
     }
+}
+
+.colour-block {
+    height: 20px !important;
+    width: 20px !important;
+    border-radius: 10px;
 }

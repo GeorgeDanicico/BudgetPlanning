@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { EventsService } from 'src/app/services/events.service';
-import { HOURS, MINUTES } from 'src/app/utils/app.constants';
+import { EVENT_COLORS, HOURS, MINUTES } from 'src/app/utils/app.constants';
 import { INoteData } from 'src/app/utils/app.types';
 
 @Component({
@@ -20,8 +20,10 @@ export class EventComponent implements OnInit {
   public endMinutes: string = '';
   public end: string = '';
   public allDay: boolean = false;
+  public eventColour: string = '#0197F6';
   public hours = HOURS;
   public minutes = MINUTES;
+  public colours = EVENT_COLORS;
 
   constructor(
     private dialogRef: MatDialogRef<EventComponent>,
@@ -42,7 +44,7 @@ export class EventComponent implements OnInit {
     const dates = this.computeDate();
 
     this.dialogRef.close({title: this.title, description: this.description, 
-      start: dates[0], end: dates[1], allDay: this.allDay});
+      start: dates[0], end: dates[1], allDay: this.allDay, eventColour: this.eventColour});
   }
 
   setAllDay() {

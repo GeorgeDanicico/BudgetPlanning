@@ -51,6 +51,17 @@
         </mat-select>
       </mat-form-field>
     </div>
+
+    <div class="color-picker">
+      <mat-form-field class="color-field">
+        <mat-label>Color</mat-label>
+        <mat-select [(value)]="eventColour" name="color">
+          <mat-option *ngFor="let colour of this.colours" [value]="colour">
+              <div [ngStyle]="{'background-color': colour, 'height': '20px', 'width': '20px', 'border-radius': '10px'}"></div>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
     </div>
     <div mat-dialog-actions>
       <button mat-button (click)="onCancelClick()">Cancel</button>

@@ -6,11 +6,21 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import { DialogService } from '../services/dialog.service';
 import { EventsService } from '../services/events.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.scss']
+  styleUrls: ['./calendar.component.scss'],
+  animations: [
+    trigger('slideAndFade', [
+      state('in', style({ transform: 'translateX(0)', opacity: 1 })),
+      transition('void => *', [
+        style({ transform: 'translateX(-100%)', opacity: 0 }),
+        animate('500ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class CalendarComponent implements OnInit {
 
@@ -23,7 +33,7 @@ export class CalendarComponent implements OnInit {
     private snackBar: MatSnackBar) { }
 
   calendarOptions: CalendarOptions = {
-    initialView: 'dayGridMonth',
+    initialView: 'timeGridWeek',
     plugins: [
       interactionPlugin,
       dayGridPlugin,
@@ -34,16 +44,11 @@ export class CalendarComponent implements OnInit {
       center: 'title',
       right: 'dayGridMonth,timeGridWeek,timeGridDay',
     },
+    unselectAuto: false,
     unselectCancel: '.event-container',
-    // events: [
-    //   { title: 'event 1', date: '2023-10-01' },
-    //   { title: 'event 2', date: '2023-10-02' },
-    //   { title: 'event 3', end: '2023-10-06T18:30:00.000Z', start: '2023-10-06T16:30:00.000Z'}
-    // ],
     weekends: true,
-    editable: true,
+    editable: false,
     fixedWeekCount: false,
-    businessHours: true,
     selectable: true,
     selectMirror: true,
     dayMaxEvents: true,
@@ -58,6 +63,10 @@ export class CalendarComponent implements OnInit {
   private fetchEvents() {
     this.isLoading = true;
     this.eventsService.getAllEvents().subscribe((result) => {
+      result.forEach(event => {
+        event.borderColor = event.eventColour;
+        event.backgroundColor = event.eventColour;
+      })
       this.events = result;
       console.log(this.events);
       this.isLoading = false;
@@ -81,7 +90,7 @@ export class CalendarComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.isLoading = true;
-        this.eventsService.addEvent(result.title, result.description, result.start, result.end, result.allDay).subscribe((response: any) => {
+        this.eventsService.addEvent(result.title, result.description, result.start, result.end, result.allDay, result.eventColour).subscribe((response: any) => {
           console.log(response);
           if (response.status === 201) {
             const addedEvent = response.event;
@@ -91,7 +100,9 @@ export class CalendarComponent implements OnInit {
               title: result.title,
               start: selectInfo.startStr,
               end: selectInfo.endStr,
-              allDay: selectInfo.allDay
+              allDay: selectInfo.allDay,
+              backgroundColor: result.eventColour,
+              borderColor: result.eventColour,
             });
             calendarApi.unselect();
             console.log('Event added:', result);
@@ -104,12 +115,13 @@ export class CalendarComponent implements OnInit {
       } else {
         calendarApi.unselect();
       }
+      this.changeDetector.detectChanges();
     }, (error) => {
       this.isLoading = false;
       this.snackBar.open("An error has occured", 'Close', { duration: 3000 });
-      // calendarApi.unselect();
+      this.changeDetector.detectChanges();
+      calendarApi.unselect();
     });
-    this.changeDetector.detectChanges();
   }
 
   handleEventClick(clickInfo: EventClickArg) {

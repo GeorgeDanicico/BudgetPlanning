@@ -14,9 +14,9 @@ export class EventsService {
   }
 
 
-  addEvent(title: string, description: string, start: string, end: string, allDay: boolean) {
+  addEvent(title: string, description: string, start: string, end: string, allDay: boolean, eventColour: string) {
     return this.http.post(`${SERVER_URL}${ENDPOINTS.EVENTS}`, { title: title, description: description, start: start, end: end,
-      allDay: allDay});
+      allDay: allDay, eventColour: eventColour});
   }
 
   // editEvent(eventId: number, title: string, description: string) {

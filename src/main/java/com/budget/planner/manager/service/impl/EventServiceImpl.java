@@ -32,7 +32,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Event addEvent(Profile authenticatedProfile, String title, String description,
-                          String start, String end, Boolean allDay) {
+                          String start, String end, Boolean allDay, String eventColour) {
         logger.info("Add event with title: {}, description: {}, start: {}, end: {}, allDay: {}", title, description,
                 start, end, allDay);
 
@@ -67,6 +67,7 @@ public class EventServiceImpl implements EventService {
                 .start(start)
                 .end(end)
                 .allDay(allDay)
+                .eventColour(eventColour)
                 .build();
         Event addedEvent = eventsRepository.save(newEvent);
         logger.info("Event has been successfully added.");
@@ -93,9 +94,9 @@ public class EventServiceImpl implements EventService {
 //    }
 
     @Override
-    public void deleteEvent(Profile authenticatedProfile, Long noteId) {
-        Event currentEvent = eventsRepository.findByIdAndProfile(noteId, authenticatedProfile).orElseThrow(() -> new AppException("400", "Invalid note id"));
+    public void deleteEvent(Profile authenticatedProfile, Long eventId) {
+        Event currentEvent = eventsRepository.findByIdAndProfile(eventId, authenticatedProfile).orElseThrow(() -> new AppException("400", "Invalid note id"));
         eventsRepository.delete(currentEvent);
-        logger.info("Event with id: {} has been successfully delete by profile with id: {}", noteId, authenticatedProfile.getId());
+        logger.info("Event with id: {} has been successfully delete by profile with id: {}", eventId, authenticatedProfile.getId());
     }
 }

@@ -53,6 +53,13 @@ public class Event {
     )
     private Boolean allDay;
 
+    @Column(
+            name = "eventColour",
+            columnDefinition = "varchar(50)",
+            nullable = true
+    )
+    private String eventColour;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name="profile_id", nullable=false)
