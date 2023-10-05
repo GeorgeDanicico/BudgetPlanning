@@ -4,6 +4,7 @@ import { INoteData, Note } from '../utils/app.types';
 import { NotesService } from '../services/notes.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { catchError, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-notes',
@@ -14,7 +15,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
       state('in', style({ transform: 'translateX(0)', opacity: 1 })),
       transition('void => *', [
         style({ transform: 'translateX(-100%)', opacity: 0 }),
-        animate('1000ms ease-in-out'),
+        animate('800ms ease-in-out'),
       ]),
     ]),
   ],
@@ -34,10 +35,17 @@ export class NotesComponent implements OnInit {
 
   getNotes() {
     this.isLoading = true;
-    this.notesService.getAllNotes().subscribe((data) => {
-      this.notes = data;
-      this.isLoading = false;
-    })
+    this.notesService.getAllNotes()
+      .pipe(catchError((error) => {
+        console.error('An error occured: ', error.error);
+        this.isLoading = false;
+        this.snackBar.open('An error has occured while loading the events.', 'Close', { duration: 3000 });
+        return throwError(() => new Error(error.error));
+      }))
+      .subscribe((data) => {
+        this.notes = data;
+        this.isLoading = false;
+      });
   }
 
   addNote() {
@@ -46,8 +54,15 @@ export class NotesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.notesService.addNote(result.title, result.description).subscribe((response: any) => {
+        this.isLoading = true;
+        this.notesService.addNote(result.title, result.description)
+        .pipe(catchError((error) => {
+          this.isLoading = false;
+          this.snackBar.open('An error has occured while trying save the note.', 'Close', { duration: 3000 });
+          return throwError(() => new Error(error.error));
+        })).subscribe((response: any) => {
           if (response.status === 201) {
+            this.isLoading = false;
             const addedNote = response.note;
             this.notes.push(addedNote);
             this.changeDetector.detectChanges();
@@ -66,11 +81,19 @@ export class NotesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.notesService.editNote(noteId, result.title, result.description).subscribe((response: any) => {
+        this.isLoading = true;
+        this.notesService.editNote(noteId, result.title, result.description)
+          .pipe(catchError((error) => {
+            this.isLoading = false;
+            this.snackBar.open('An error has occured while trying to edit the note.', 'Close', { duration: 3000 });
+            return throwError(() => new Error(error.error));
+          }))
+          .subscribe((response: any) => {
           if (response.status === 200) {
             this.edit(noteId, result.title, result.description);
             this.changeDetector.detectChanges();
             this.snackBar.open("Note edited successfully.", 'Close');
+            this.isLoading = false;
           }
         });
       }
@@ -79,13 +102,22 @@ export class NotesComponent implements OnInit {
 
   deleteNote(noteId: number) {
     if (confirm("Are you sure you want to delete the note?")) {
-      this.notesService.deleteNote(noteId).subscribe((response: any) => {
-        if (response.status === 200) {
-          this.delete(noteId);
-          this.changeDetector.detectChanges();
-          this.snackBar.open("Note deleted successfully.", 'Close');
-        }
-      });
+      this.isLoading = true;
+      this.notesService.deleteNote(noteId)
+        .pipe(catchError((error) => {
+          console.error('An error occured: ', error.error);
+          this.isLoading = false;
+          this.snackBar.open('An error has occured while trying to log in. Please try again later.', 'Close', { duration: 3000 });
+          return throwError(() => new Error(error.error));
+        }))
+        .subscribe((response: any) => {
+          if (response.status === 200) {
+            this.delete(noteId);
+            this.isLoading = false;
+            this.changeDetector.detectChanges();
+            this.snackBar.open("Note deleted successfully.", 'Close');
+          }
+        });
     }
   }
 
