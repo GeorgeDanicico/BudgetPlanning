@@ -1,5 +1,6 @@
 package com.budget.planner.manager.security;
 
+import com.budget.planner.manager.model.enums.ERole;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,8 @@ public class WebSecurityConfig {
     private final UserService userService;
     private final JwtAuthEntryPoint unauthorizedHandler;
     private final SessionService sessionService;
+
+    private static ERole ROLE_ADMIN = ERole.ADMIN;
 
     public WebSecurityConfig(UserService userService, JwtAuthEntryPoint unauthorizedHandler, SessionService sessionService) {
         this.userService = userService;
@@ -80,6 +83,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/register").permitAll()
                         .requestMatchers("/api/login").permitAll()
+                        .requestMatchers("/admin/**").permitAll()
                         .anyRequest().authenticated())
                 .securityContext(securityContext ->
                         securityContext
