@@ -25,6 +25,10 @@
             <mat-icon>calendar_today</mat-icon>
             <span class="nav-label">Calendar</span>
           </a>
+          <a mat-list-item routerLink="/books" routerLinkActive="active-link">
+            <mat-icon>book</mat-icon>
+            <span class="nav-label">Books</span>
+          </a>
           <a mat-list-item routerLink="/profile" routerLinkActive="active-link">
             <mat-icon>person</mat-icon>
             <span class="nav-label">Profile</span>
@@ -42,6 +46,7 @@
         <app-dashboard *ngIf="showDashboardComponent"></app-dashboard>
         <app-notes *ngIf="showNotesComponent"></app-notes>
         <app-calendar *ngIf="showCalendarComponent"></app-calendar>
+        <app-book-page *ngIf="showBookPageComponent"></app-book-page>
 
       </mat-sidenav-content>
     </mat-sidenav-container>

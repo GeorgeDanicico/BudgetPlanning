@@ -10,6 +10,13 @@ export interface INoteData {
     isEditMode: boolean,
 }
 
+export interface Book {
+    id: number;
+    title: string;
+    author: string;
+    status: string;
+}
+
 export interface Note {
     id: number,
     title: string,

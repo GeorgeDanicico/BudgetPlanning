@@ -33,6 +33,11 @@ const routes: Routes = [
     path: 'calendar',
     component: SidenavComponent,
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'books',
+    component: SidenavComponent,
+    canActivate: [AuthGuard]
   }
  ]
 

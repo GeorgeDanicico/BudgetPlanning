@@ -1,0 +1,66 @@
+<!-- src/app/book-list/book-list.component.html -->
+<div class="book-page-container">
+<h2>My Book List</h2>
+
+<button mat-raised-button class="add-button" (click)="openAddBookDialog()">Add Book</button>
+
+<table mat-table [dataSource]="tableDataSource" class="mat-elevation-z8">
+  <!-- Checkbox Column -->
+  <ng-container matColumnDef="select">
+    <th mat-header-cell *matHeaderCellDef>
+      <mat-checkbox 
+        (change)="selectAll($event)"
+        [indeterminate]="selection.hasValue() && !isAllSelected()">
+      </mat-checkbox>
+    </th>
+    <td mat-cell *matCellDef="let row">
+      <mat-checkbox [(ngModel)]="row.selected"
+        (change)="$event ? selection.toggle(row) : null"
+        [checked]="selection.isSelected(row)"></mat-checkbox>
+    </td>
+  </ng-container>
+
+  <!-- Title Column -->
+  <ng-container matColumnDef="title">
+    <th mat-header-cell *matHeaderCellDef>Title</th>
+    <td mat-cell *matCellDef="let book">{{ book.title }}</td>
+  </ng-container>
+
+  <!-- Author Column -->
+  <ng-container matColumnDef="author">
+    <th mat-header-cell *matHeaderCellDef>Author</th>
+    <td mat-cell *matCellDef="let book">{{ book.author }}</td>
+  </ng-container>
+
+  <!-- Status Column -->
+  <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef>Reading Status</th>
+    <td mat-cell *matCellDef="let book">{{ book.status }}</td>
+  </ng-container>
+
+  <!-- Actions Column -->
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef>Actions</th>
+    <td mat-cell *matCellDef="let book">
+        <button mat-button [matMenuTriggerFor]="menu">
+            <mat-icon>settings</mat-icon>
+        </button>
+
+        <mat-menu #menu>
+            <button mat-icon-button (click)="updateStatus(book.id, 'to-read')" title="To Read">
+                <mat-icon>book</mat-icon>
+            </button>
+            <button mat-icon-button (click)="updateStatus(book.id, 'reading')" title="Reading">
+                <mat-icon>playlist_play</mat-icon>
+            </button>
+            <button mat-icon-button (click)="updateStatus(book.id, 'finished')" title="Finished">
+                <mat-icon>done</mat-icon>
+            </button>
+        </mat-menu>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+</div>
