@@ -5,6 +5,7 @@ export const ENDPOINTS = {
     VERIFY_SESSION: 'api/verifySession',
     NOTES: 'api/notes',
     EVENTS: 'api/events',
+    BOOKS: 'api/books'
 
 }
 

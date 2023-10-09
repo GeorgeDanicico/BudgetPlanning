@@ -13,18 +13,20 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule, MatError } from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
+import { MatMenuModule } from '@angular/material/menu';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AuthorizationService } from './services/authorization-service.service';
@@ -40,6 +42,8 @@ import interactionPlugin from '@fullcalendar/interaction'; // For drag-and-drop 
 import { CalendarComponent } from './calendar/calendar.component';
 import { EventComponent } from './calendar/event/event.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { BookPageComponent } from './book-page/book-page.component';
+import { AddBookDialogComponent } from './book-page/addbookdialog/addbookdialog.component';
 
 
 
@@ -55,6 +59,8 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
     CalendarComponent,
     EventComponent,
     ConfirmationDialogComponent,
+    BookPageComponent,
+    AddBookDialogComponent,
   ],
   imports: [
     MatNativeDateModule,
@@ -64,6 +70,7 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
     MatProgressBarModule,
     MatProgressSpinnerModule,
     MatToolbarModule,
+    MatMenuModule,
     MatInputModule,
     MatButtonModule,
     MatSidenavModule,
@@ -73,6 +80,7 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
     MatDatepickerModule,
     MatCheckboxModule,
     MatSelectModule,
+    MatTableModule,
     ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,
