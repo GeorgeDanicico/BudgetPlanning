@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { AuthorizationService } from '../services/authorization-service.service';
 import { registerPasswordValidator } from '../utils/validators';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { catchError, throwError } from 'rxjs';
 
 @Component({
@@ -12,7 +12,7 @@ import { catchError, throwError } from 'rxjs';
 })
 export class RegisterComponent implements OnInit {
   public isLoading: boolean = false;
-  public form: FormGroup = new FormGroup({});
+  public form: UntypedFormGroup = new UntypedFormGroup({});
   public hidePassword: boolean = true;
   public hideConfirmPassword: boolean = true;
 
@@ -22,10 +22,10 @@ export class RegisterComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.form.addControl('username', new FormControl('', [Validators.required]));
-    this.form.addControl('email', new FormControl('', [Validators.required, Validators.email]));
-    this.form.addControl('password', new FormControl('', [Validators.required]));
-    this.form.addControl('confirmPassword', new FormControl('', [Validators.required]));
+    this.form.addControl('username', new UntypedFormControl('', [Validators.required]));
+    this.form.addControl('email', new UntypedFormControl('', [Validators.required, Validators.email]));
+    this.form.addControl('password', new UntypedFormControl('', [Validators.required]));
+    this.form.addControl('confirmPassword', new UntypedFormControl('', [Validators.required]));
     this.form.setValidators(registerPasswordValidator());
   }
 

@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@ang
 import { DialogService } from '../services/dialog.service';
 import { INoteData, Note } from '../utils/app.types';
 import { NotesService } from '../services/notes.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { catchError, throwError } from 'rxjs';
 

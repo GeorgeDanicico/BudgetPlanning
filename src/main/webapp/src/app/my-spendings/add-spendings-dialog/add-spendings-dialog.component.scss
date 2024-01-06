@@ -1,0 +1,14 @@
+.spending-dialog-component {
+    .spending-dialog-form {
+        padding: 0 40px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .spending-actions {
+        .add-button { 
+            background: #ffb80a !important;
+            color: white;
+        }
+    }
+}

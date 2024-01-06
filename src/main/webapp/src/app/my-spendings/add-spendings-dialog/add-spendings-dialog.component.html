@@ -1,0 +1,25 @@
+<div class="spending-dialog-component">
+    <h1 mat-dialog-title>Add Spending</h1>
+    <div mat-dialog-content class="spending-dialog-form">
+      <mat-form-field>
+        <input matInput placeholder="Product" #product>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Price" #price>
+      </mat-form-field>
+      <mat-form-field>
+         <mat-label>Category</mat-label>
+      <select matNativeControl required #category>
+        <option value="volvo">Volvo</option>
+        <option value="saab">Saab</option>
+        <option value="mercedes">Mercedes</option>
+        <option value="audi">Audi</option>
+      </select>
+      </mat-form-field>
+    </div>
+    <div mat-dialog-actions class="spending-actions">
+      <button mat-button (click)="onCancelClick()">Cancel</button>
+      <button mat-button class="add-button" (click)="onAddClick({product: product.value, price: price.value, category: category.value})">Add</button>
+    </div>
+  </div>
+  

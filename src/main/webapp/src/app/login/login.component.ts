@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { AuthorizationService } from '../services/authorization-service.service';
 import { ILoginResponse } from '../utils/app.types';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { catchError, throwError } from 'rxjs';
 
 @Component({
@@ -13,7 +13,7 @@ import { catchError, throwError } from 'rxjs';
 })
 export class LoginComponent implements OnInit {
   public isLoading: boolean = false;
-  public form: FormGroup = new FormGroup({});
+  public form: UntypedFormGroup = new UntypedFormGroup({});
   public hidePassword: boolean = true;
 
   constructor(private authorizationService: AuthorizationService, 
@@ -21,8 +21,8 @@ export class LoginComponent implements OnInit {
               private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-    this.form.addControl('username', new FormControl('', [Validators.required]));
-    this.form.addControl('password', new FormControl('', [Validators.required]));
+    this.form.addControl('username', new UntypedFormControl('', [Validators.required]));
+    this.form.addControl('password', new UntypedFormControl('', [Validators.required]));
   }
 
   public login() {

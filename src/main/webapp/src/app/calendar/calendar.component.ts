@@ -5,7 +5,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { DialogService } from '../services/dialog.service';
 import { EventsService } from '../services/events.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { catchError, throwError } from 'rxjs';
 

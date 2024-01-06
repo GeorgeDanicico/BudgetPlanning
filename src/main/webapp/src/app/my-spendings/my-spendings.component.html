@@ -1,0 +1,51 @@
+<h2>My Spendings</h2>
+
+<mat-form-field>
+  <mat-label>Select Month</mat-label>
+  <mat-select [(ngModel)]="selectedMonth">
+    <mat-option *ngFor="let month of months" [value]="month">{{ month }}</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<div class="spendings-container">
+  <div class="spendings-table">
+    <!-- Inside the "spendings-table" div -->
+<table mat-table [dataSource]="spendings">
+    <ng-container matColumnDef="product">
+      <th mat-header-cell *matHeaderCellDef>Product</th>
+      <td mat-cell *matCellDef="let spending">
+        <mat-form-field>
+          <input matInput [(ngModel)]="spending.product" placeholder="Product">
+        </mat-form-field>
+      </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef>Price</th>
+      <td mat-cell *matCellDef="let spending">
+        <mat-form-field>
+          <input matInput [(ngModel)]="spending.price" placeholder="Price">
+        </mat-form-field>
+      </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="category">
+      <th mat-header-cell *matHeaderCellDef>Category</th>
+      <td mat-cell *matCellDef="let spending">
+        <mat-form-field>
+          <input matInput [(ngModel)]="spending.category" placeholder="Category">
+        </mat-form-field>
+      </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  
+  <button mat-raised-button (click)="addSpending()">Add Spending</button>
+  
+  </div>
+  <div class="spendings-chart">
+    <!-- Display the pie chart here -->
+  </div>
+</div>

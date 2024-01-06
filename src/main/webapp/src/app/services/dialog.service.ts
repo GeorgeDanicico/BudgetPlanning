@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { NoteComponent } from '../notes/add-edit-note/note.component';
 import { INoteData } from '../utils/app.types';
 import { EventComponent } from '../calendar/event/event.component';
